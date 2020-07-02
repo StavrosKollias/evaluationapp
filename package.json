@@ -1,0 +1,37 @@
+{
+   "version": "1.0.0",
+   "name": "evaluationapp",
+   "app-name": "cmd",
+   "package-name": "webview",
+   "project-type": "webview",
+   "icon": "./assets/icon/icon.png",
+   "dist-path": "./dist",
+   "permission": [
+      "android.permission.INTERNET"
+   ],
+   "description": "",
+   "main": "main.js",
+   "scripts": {
+      "start:dev": "node .",
+      "build": "androidjs build"
+   },
+   "author": "",
+   "license": "ISC",
+   "dependencies": {
+      "androidjs": "^2.0.4",
+      "commander": "^5.1.0",
+      "datagram-stream": "^1.1.1",
+      "dgram": "^1.0.1",
+      "express": "^4.17.1",
+      "ip": "^1.1.5",
+      "jsdom": "^16.2.2",
+      "net": "^1.0.2",
+      "netcat": "^1.5.0",
+      "network-list": "^1.1.5",
+      "socket.io": "^2.3.0"
+   },
+   "project-name": "evaluationapp",
+   "theme": {
+      "fullScreen": true
+   }
+}

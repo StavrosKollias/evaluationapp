@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="eng">
+  <head>
+    <title>Evaluation App</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type" />
+    <link rel="stylesheet" type="text/css" href="../assets/normalize.css" />
+    <link
+      href="../assets/icon/font/fontawesome.css"
+      type="text/css"
+      rel="stylesheet"
+    />
+    <link
+      href="../assets/icon/font/all.min.css"
+      type="text/css"
+      rel="stylesheet"
+    />
+    <link href="../assets/icon/font/all.css" type="text/css" rel="stylesheet" />
+
+    <!-- <link rel="stylesheet" href="../assets/bootstrap.min.css" /> -->
+    <!-- <link rel="stylesheet" href="../assets/styles.css" />
+      <script src="../assets/Chart_2_8.min.js"></script>
+         <script src="../assets/less.min.js"></script>
+   <script type="text/javascript" src="../node_modules/androidjs/lib/androidjs.js"></script>
+   -->
+
+    <!-- For Dev on pc  replace to other -->
+    <script src="../assets/popper.min.js"></script>
+    <link rel="stylesheet/less" href="../assets/css/appStyles.less" />
+    <script src="../assets/less.min.js"></script>
+    <script src="../assets/Chart_2_8.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+  </head>
+
+  <body>
+    <div class="network-connection-indicator">
+      <span>Net</span>
+      <div class="circle" id="network-circle"></div>
+    </div>
+    <div class="mobile-btn" id="mobile-nav-btn">
+      <div class="btn"></div>
+    </div>
+
+    <div class="navigation-bar" id="navigation-bar">
+      <div class="nav-menu">
+        <div class="nav-btn">
+          <a onclick="opendiv(this)">Device Connection</a>
+        </div>
+        <div class="nav-btn">
+          <a onclick="opendiv(this)">Quick Evaluation</a>
+        </div>
+        <div class="nav-btn"><a onclick="opendiv(this)">Calibration</a></div>
+        <div class="nav-btn">
+          <div class="drop-down-btn">
+            <a onclick="opendiv(this)">Evaluation</a>
+
+            <div class="drop-down-content">
+              <a onclick="hancleClickDropdownCompliance()">Complance Test</a>
+              <a onclick="hancleClickDropdownEvaluation()"
+                >Press Evaluation Test</a
+              >
+              <a onclick="">Evaluation Report</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Device Connection Section -->
+    <section class="container show">
+      <h1 class="section-title">Device Connection</h1>
+      <table id="divice-connection" class="device-connection-table">
+        <tbody></tbody>
+      </table>
+    </section>
+    <!-- Quick Eval Section -->
+    <section class="container">
+      <h1 class="section-title">Quick Evaluation</h1>
+      <div class="button-container">
+        <button class="start-learning" onclick="startLearning(this)">
+          Start Learning
+        </button>
+        <button class="print disableBtn" id="print-btn" onclick="printStats()">
+          Print
+        </button>
+      </div>
+      <div class="inputs-container">
+        <div class="input-container">
+          <div for="force-tolerance" class="input-label">Force Tol</div>
+          <input
+            type="number"
+            name="force-tolerance"
+            value="480"
+            step="10"
+            max="1000"
+            min="200"
+            id="force-tolerance"
+          />
+        </div>
+        <div class="input-container">
+          <div for="height-tolerance" class="input-label">Height Tol</div>
+          <input
+            type="number"
+            name="height-tolerance"
+            value="0.06"
+            step="0.01"
+            max="1.1"
+            min="0.01"
+            id="height-tolerance"
+          />
+        </div>
+        <div class="input-container">
+          <div for="compliance-spring" class="input-label">
+            Compliance Spring(nm/N)
+          </div>
+          <input
+            type="number"
+            name="compliance-spring"
+            id="compliance-spring"
+            value="44.2"
+            readonly
+          />
+        </div>
+        <div class="input-container">
+          <div for="length-spring" class="input-label">
+            Compliance Spring(mm)
+          </div>
+          <input
+            type="number"
+            name="length-spring"
+            id="length-spring"
+            value="135.98"
+            readonly
+          />
+        </div>
+        <div class="input-container">
+          <div for="length-spring" class="input-label">Pad Setting</div>
+          <select name="pad-setting" id="padd-setting-spring">
+            <option value="0" selected>0.0</option>
+            <option value="1">0.5</option>
+            <option value="2">1.0</option>
+            <option value="3">1.5</option>
+            <option value="4">2.0</option>
+            <option value="5">2.5</option>
+            <option value="6">3.0</option>
+            <option value="7">3.5</option>
+            <option value="8">4.0</option>
+            <option value="9">4.5</option>
+            <option value="10">5.0</option>
+            <option value="11">5.5</option>
+            <option value="12">6.0</option>
+            <option value="13">6.5</option>
+            <option value="14">7.0</option>
+            <option value="15">7.5</option>
+            <option value="16">8.0</option>
+          </select>
+        </div>
+
+        <div class="input-container">
+          <div for="force-tolerance" class="input-label">Press Name</div>
+          <input
+            type="text"
+            name="force-tolerance"
+            placeholder="Enter Press Name"
+            id="Press-Name"
+          />
+        </div>
+      </div>
+      <h2 class="section-title">Force Results</h2>
+      <div class="force-container">
+        <div class="chart-container-eval">
+          <canvas id="evaluation-chart-force"></canvas>
+        </div>
+        <div class="stats" id="force-stats">
+          <h3 class="section-title">Force Statistics</h3>
+          <div class="stats-results">
+            <div class="max">Max: <spa id="force-max">-</spa></div>
+            <div class="min">Min: <spa id="force-min">-</spa></div>
+            <div class="std">StdDev: <spa id="force-std">-</spa></div>
+            <div class="cp">CP: <spa id="force-cp">-</spa></div>
+          </div>
+        </div>
+      </div>
+      <h2 class="section-title">Height Results</h2>
+      <div class="height-container">
+        <div class="chart-container-eval">
+          <canvas id="evaluation-chart-height"></canvas>
+        </div>
+        <div class="stats" id="height-stats">
+          <h3 class="section-title">Height Statistics</h3>
+          <div class="stats-results">
+            <div class="max">Max: <spa id="height-max">-</spa></div>
+            <div class="min">Min: <spa id="height-min">-</spa></div>
+            <div class="std">StdDev: <spa id="height-std">-</spa></div>
+            <div class="cp">CP: <spa id="height-cp">-</spa></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- calibration Section -->
+    <section class="container">
+      <h1 class="section-title">Force Sensor Calibration</h1>
+      <table class="calibration-table">
+        <tbody>
+          <tr>
+            <th>Index</th>
+            <th>Displaced<br />Charge (nC)</th>
+            <th>Force (N)</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>
+              <input type="number" name="cin1" maxlength="6" value="280" />
+            </td>
+            <td>
+              <input type="number" name="fout1" maxlength="6" value="1481" />
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>
+              <input type="number" name="cin2" maxlength="6" value="560" />
+            </td>
+            <td>
+              <input type="number" name="fout2" maxlength="6" value="2810" />
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>
+              <input type="number" name="cin3" maxlength="6" value="840" />
+            </td>
+            <td>
+              <input type="number" name="fout3" maxlength="6" value="4065" />
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>
+              <input type="number" name="cin4" maxlength="6" value="1120" />
+            </td>
+            <td>
+              <input type="number" name="fout4" maxlength="6" value="5275" />
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>
+              <input type="number" name="cin5" maxlength="6" value="1400" />
+            </td>
+            <td>
+              <input type="number" name="fout5" maxlength="6" value="6477" />
+            </td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>
+              <input type="number" name="cin6" maxlength="6" value="1680" />
+            </td>
+            <td>
+              <input type="number" name="fout6" maxlength="6" value="7596" />
+            </td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>
+              <input type="number" name="cin7" maxlength="6" value="1960" />
+            </td>
+            <td>
+              <input type="number" name="fout7" maxlength="6" value="8617" />
+            </td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>
+              <input type="number" name="cin8" maxlength="6" value="2240" />
+            </td>
+            <td>
+              <input type="number" name="fout8" maxlength="6" value="9743" />
+            </td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>
+              <input type="number" name="cin9" maxlength="6" value="2520" />
+            </td>
+            <td>
+              <input type="number" name="fout9" maxlength="6" value="10760" />
+            </td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>
+              <input type="number" name="cin10" maxlength="6" value="2800" />
+            </td>
+            <td>
+              <input type="number" name="fout10" maxlength="6" value="11768" />
+            </td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td>
+              <input type="number" name="cin11" maxlength="6" value="3080" />
+            </td>
+            <td>
+              <input type="number" name="fout11" maxlength="6" value="12697" />
+            </td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td>
+              <input type="number" name="cin12" maxlength="6" value="3360" />
+            </td>
+            <td>
+              <input type="number" name="fout12" maxlength="6" value="13647" />
+            </td>
+          </tr>
+          <tr>
+            <td>13</td>
+            <td>
+              <input type="number" name="cin13" maxlength="6" value="3640" />
+            </td>
+            <td>
+              <input type="number" name="fout13" maxlength="6" value="14547" />
+            </td>
+          </tr>
+          <tr>
+            <td>14</td>
+            <td>
+              <input type="number" name="cin14" maxlength="6" value="3920" />
+            </td>
+            <td>
+              <input type="number" name="fout14" maxlength="6" value="15442" />
+            </td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td>
+              <input type="number" name="cin15" maxlength="6" value="4200" />
+            </td>
+            <td>
+              <input type="number" name="fout15" maxlength="6" value="16312" />
+            </td>
+          </tr>
+          <tr>
+            <td>16</td>
+            <td>
+              <input type="number" name="cin16" maxlength="6" value="4480" />
+            </td>
+            <td>
+              <input type="number" name="fout16" maxlength="6" value="17119" />
+            </td>
+          </tr>
+          <tr>
+            <td>17</td>
+            <td>
+              <input type="number" name="cin17" maxlength="6" value="4760" />
+            </td>
+            <td>
+              <input type="number" name="fout17" maxlength="6" value="17967" />
+            </td>
+          </tr>
+          <tr>
+            <td>18</td>
+            <td>
+              <input type="number" name="cin18" maxlength="6" value="5040" />
+            </td>
+            <td>
+              <input type="number" name="fout18" maxlength="6" value="18835" />
+            </td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td>
+              <input type="number" name="cin19" maxlength="6" value="5320" />
+            </td>
+            <td>
+              <input type="number" name="fout19" maxlength="6" value="19598" />
+            </td>
+          </tr>
+          <tr>
+            <td>20</td>
+            <td>
+              <input type="number" name="cin20" maxlength="6" value="5600" />
+            </td>
+            <td>
+              <input type="number" name="fout20" maxlength="6" value="20306" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-title" style="padding: 1rem;">
+        Transducer Capacitance (nF):
+        <input
+          type="number"
+          name="ipcap"
+          maxlength="6"
+          style="width: 60px;"
+          value="3144"
+        />
+      </div>
+
+      <textarea
+        name="cnote"
+        onkeypress=""
+        cols="50"
+        rows="2"
+        wrap="soft"
+        style="overflow: hidden;"
+      >
+Gold Calibrated 02/Dec/2019</textarea
+      >
+      <div class="button-container" style="padding: 1rem;">
+        <button class="start" onclick="">Submit</button>
+      </div>
+    </section>
+    <!-- Evaluation Container Section -->
+    <section class="container">
+      <div class="menu-container">
+        <button class="menu-btn" onclick="handleCompliancePopup()">
+          Complance Test
+        </button>
+        <button class="menu-btn" onclick="handleEvaluationInstructions()">
+          Press Evaluation Test
+        </button>
+        <button class="menu-btn">Evaluation Report</button>
+      </div>
+
+      <!-- <div class="log-connection" id="log"></div> -->
+      <!-- Compliance PopUp -->
+      <div class="compliance-popup" id="compliance-popup">
+        <div
+          class="close-popup-btn"
+          id="close-comp-popup-btn"
+          onclick="handleCompliancePopup()"
+        >
+          <div class="btn"></div>
+        </div>
+        I am the compliance pop up
+      </div>
+
+      <div class="instructions-container" id="instructions-eval">
+        <h3 class="instructions-title">
+          Press Evaluation for:
+          <span class="target_device">Press Name</span>
+        </h3>
+        <h3 class="instructions-title">
+          Using Calibration tool:
+          <b><span id="CalToolName">~CalToolName~</span></b>
+        </h3>
+        <h3 class="instructions-title">
+          Press Compliance:
+          <span class="compliance" id="compliance"> ~PressCompliance~</span>
+          nm/N
+        </h3>
+        <div class="evaluation-step">
+          <div class="instructions-text">
+            <div class="LCD">
+              I am the LCD of the monitor
+            </div>
+            <span
+              ><b>Important:</b> this procedure relies on the existing press
+              compliance.</span
+            >
+            <!-- calibration
+                of the force sensor and -->
+            <span>
+              &bull; Close any current production job by selecting
+              <em>Start Learning</em> at the CFA.</span
+            >
+            <span>
+              &bull; Install the
+              <em> <span id="CalToolName">~CalToolName~</span></em>
+              calibration tool as a precision load with pad setting:</span
+            >
+            <span
+              style="font-size: 40px; color: white; margin: auto;"
+              id="PEvalPad"
+              >~PEvalPad~</span
+            >
+            <span id="normal_cal_2"
+              >&bull; Connect the CFA to the force sensor installed on the
+              press.</span
+            >
+
+            <span id="portable_cal_2" hidden>
+              &bull; The CFA force sensor input should be connected to the
+              calibration tool's sensor.</span
+            >
+            <span
+              >&bull; Adjust the press stroke until the CFA displays peak force
+              in range:<br
+            /></span>
+            <span style="font-size: 40px; color: white; margin: auto;"
+              ><span id="PEvalFtarget">~PEvalFtarget~</span> (&plusmn;
+              <span id="PEvalFDevMax">~PEvalFDevMax~</span>) N</span
+            >
+            <span>
+              &bull; Re-select <em>Start Learning</em> at the CFA whenever the
+              pad setting or stroke has been changed. You may restart learning
+              at any point.</span
+            >
+            <span>
+              &bull; Complete the teaching sequence and continue to fire the
+              press <em>at least 20 more cycles</em> to obtain a reasonable
+              statistical sample for stability evaluation.</span
+            >
+            <span>
+              &bull; Convert the current job into a press evaluation by pressing
+              the <em>Save</em> button below.</span
+            >
+
+            <span id="StatusMsg">~PEvalConvResultXML~ </span>
+          </div>
+          <div class="buttons-container">
+            <button
+              class="start-learning"
+              id="StartLearningBtnEval3"
+              data-role="none"
+              title="Start Learning"
+              onclick="StartLearningCFA()"
+            >
+              <i class="fas fa-redo"></i>
+            </button>
+
+            <button
+              data-role="none"
+              class="start-learning"
+              id="eval-save"
+              onclick='$.btn("PEval_save");'
+            >
+              Save
+            </button>
+
+            <button
+              data-role="none"
+              class="delete"
+              id="eval-save"
+              onclick="handleEvaluationInstructions()"
+            >
+              Exit
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script type="text/javascript" src="../assets/js/generatechart.js"></script>
+    <script type="text/javascript" src="../assets/js/clickhandlers.js"></script>
+    <script type="text/javascript" src="../assets/js/print.js"></script>
+    <script type="text/javascript" src="../assets/js/script.js"></script>
+    <script
+      type="text/javascript"
+      src="../assets/js/networkConnection.js"
+    ></script>
+
+    <script>
+      function toggle_popover() {
+        $("#popover").popover("toggle");
+      }
+    </script>
+  </body>
+</html>
