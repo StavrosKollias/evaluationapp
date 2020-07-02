@@ -19,6 +19,12 @@ const closeEvaluationInstructions = document.getElementById(
   "close-evaluation-pinst-btn"
 );
 
+const introductionContainer = document.getElementById("introduction");
+
+setTimeout(() => {
+  introductionContainer.classList.remove("active");
+}, 10000);
+
 front.on("error Request", function (msg) {
   alert(msg);
 });
