@@ -5,7 +5,8 @@
 // });
 
 var devicesNetwork;
-front.send("give Me Devices");
+// function askDevices()
+
 front.on("devices", function (devices) {
   devicesNetwork = devices;
   actionDevices(devices);

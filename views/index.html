@@ -17,18 +17,14 @@
       rel="stylesheet"
     />
     <link href="../assets/icon/font/all.css" type="text/css" rel="stylesheet" />
-    <!-- For Dev on pc  replace to other -->
     <script
       type="text/javascript"
       src="../node_modules/androidjs/lib/androidjs.js"
     ></script>
-    <script src="../assets/popper.min.js"></script>
     <link rel="stylesheet/less" href="../assets/css/appStyles.less" />
     <script src="../assets/less.min.js"></script>
     <script src="../assets/Chart_2_8.min.js"></script>
     <script src="../assets/jquery-3.3.1.slim.min.js"></script>
-
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
   </head>
 
   <body>
@@ -36,6 +32,28 @@
       <h1 class="title">G3 Plus</h1>
       <div class="image-container">
         <img src="../assets/images/cmd-logo.png" alt="cmd logo" />
+      </div>
+    </div>
+    <div class="wifi-connection-container active" id="wifi-container">
+      <div class="loader" id="loading-gif-wifi">Loading...</div>
+
+      <div class="wifi-list-container" id="wifi-list-container">
+        <h3 class="networks-title">Available WIFI Netwroks</h3>
+        <ul class="wifi-networks-list" id="wifi-network-list-container"></ul>
+      </div>
+      <div class="popUp-connect" id="popUp-connect">
+        <div class="ssid">network: <span id="ssid-connect"></span></div>
+
+        <div class="password-inpunt-container">
+          Enter password:
+          <input type="password" id="network-password" class="cmd-input" />
+          <input type="checkbox" onclick="visiblefPassword()" />Show Password
+        </div>
+
+        <div class="network-buttons-container">
+          <button class="connection-btn" id="connect-network">Connect</button>
+          <button class="disconnect-btn" id="cancel-connection">Cancel</button>
+        </div>
       </div>
     </div>
 
@@ -553,7 +571,7 @@ Gold Calibrated 02/Dec/2019</textarea
         </div>
       </div>
     </section>
-
+    <script type="text/javascript" src="../assets/js/wifi.js"></script>
     <script type="text/javascript" src="../assets/js/generatechart.js"></script>
     <script type="text/javascript" src="../assets/js/clickhandlers.js"></script>
     <script type="text/javascript" src="../assets/js/print.js"></script>

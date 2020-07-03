@@ -21,9 +21,13 @@ const closeEvaluationInstructions = document.getElementById(
 
 const introductionContainer = document.getElementById("introduction");
 
+const cancelWifiConnectbtn = document.getElementById("cancel-connection");
+const connectWifiNetwork = document.getElementById("connect-network");
+
 setTimeout(() => {
   introductionContainer.classList.remove("active");
-}, 10000);
+  scanWifi();
+}, 2500);
 
 front.on("error Request", function (msg) {
   alert(msg);
@@ -47,7 +51,16 @@ function startLearning(element) {
   }
 }
 
+function visiblefPassword() {
+  var x = document.getElementById("network-password");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
 // Event handlers for Nav btns--------------------------------------//
+
 function opendiv(event) {
   var devicecon = document.getElementsByClassName("container")[0];
   var quickeval = document.getElementsByClassName("container")[1];
@@ -160,3 +173,20 @@ function handleEvaluationInstructions() {
     closeEvaluationInstructions.classList.remove("active");
   }
 }
+
+cancelWifiConnectbtn.addEventListener("click", (e) => {
+  var popupConnect = document.getElementById("popUp-connect");
+  popupConnect.classList.remove("active");
+  document.getElementById("network-password").value = "";
+});
+connectWifiNetwork.addEventListener("click", (e) => {
+  const ssid = document.getElementById("ssid-connect").innerText;
+  const pass = document.getElementById("network-password").value;
+
+  if (pass.length == 0) {
+    alert("Enter password");
+    document.getElementById("network-password").focus();
+  } else {
+    connectToWifi(ssid, pass);
+  }
+});
