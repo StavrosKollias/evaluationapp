@@ -157,6 +157,7 @@ body {
 
 .wifi-connection-container {
   background-color: @white;
+  overflow-y: scroll;
   opacity: 0;
   z-index: -1;
   position: fixed;
@@ -250,6 +251,7 @@ body {
 .introduction {
   background-color: @white;
   opacity: 0;
+  overflow-y: scroll;
   z-index: -1;
   position: fixed;
   width: 100%;
@@ -268,56 +270,48 @@ body {
     opacity: 1;
   }
 
-  .title {
-    text-align: center;
-    width: 30%;
-    font-size: 55px;
+  .details-intro {
+    width: 50%;
     max-width: 300px;
     min-width: 250px;
     position: absolute;
-    background: linear-gradient(
-      to right,
-      @logoblue 0%,
-      @purpledarklogo 70%,
-      @purplelightlogo 100%
-    );
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    transform-origin: 50% 50%;
-    -moz-transform-origin: 50% 50%;
-    -ms-transform-origin: 50% 50%;
-    -webkit-transform-origin: 50% 50%;
-    -o-transform-origin: 50% 50%;
-    left: 50%;
-    top: 25%;
-    transform: translateX(-50%);
-    -moz-transform: translateX(-50%);
-    -ms-transform: translateX(-50%);
-    -o-transform: translateX(-50%);
-    -webkit-transform: translateX(-50%);
-  }
-
-  .image-container {
-    width: 30%;
-    max-width: 200px;
-    min-width: 150px;
-    position: absolute;
-    transform-origin: 50% 50%;
-    -moz-transform-origin: 50% 50%;
-    -ms-transform-origin: 50% 50%;
-    -webkit-transform-origin: 50% 50%;
-    -o-transform-origin: 50% 50%;
-    left: 50%;
     top: 50%;
+    left: 50%;
+    transform-origin: 50% 50%;
+    -moz-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    -webkit-transform-origin: 50% 50%;
+    -o-transform-origin: 50% 50%;
     transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
 
-    img {
+    .title {
+      text-align: start;
+      width: 30%;
+      font-size: 55px;
+      max-width: 300px;
+      min-width: 250px;
+      background: linear-gradient(
+        to right,
+        @logoblue 0%,
+        @purpledarklogo 70%,
+        @purplelightlogo 100%
+      );
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .image-container {
       width: 100%;
+      max-width: 200px;
+      min-width: 150px;
+      img {
+        width: 100%;
+      }
     }
   }
 }
