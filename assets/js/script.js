@@ -6,10 +6,10 @@
 
 var devicesNetwork;
 // function askDevices()
-
+var connectedDevice;
 front.on("devices", function (devices) {
   devicesNetwork = devices;
-  var connectedDevice;
+
   front.on("connected Device", (device) => {
     connectedDevice = device;
   });
@@ -150,8 +150,7 @@ adddevices = (devicesNetwork, device) => {
             button.setAttribute("class", "disconnect-btn");
           } else {
             var btntext = document.createTextNode("Connect");
-            button.setAttribute("class", "disableBtn");
-            button.setAttribute("class", "connection-btn");
+            button.setAttribute("class", "connection-btn disableBtn");
           }
         } else {
           button.setAttribute("class", "connection-btn");

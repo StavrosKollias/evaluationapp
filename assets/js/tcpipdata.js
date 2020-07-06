@@ -44,7 +44,7 @@ module.exports.tCPConnection = function (listConnectedDevices) {
   });
   let res;
   socket.on("ready", function () {
-    console.log("ready");
+    // console.log("ready");
     socket.write("f\r\n");
     setInterval(() => {
       socket.write("\r\n");
@@ -74,6 +74,7 @@ module.exports.tCPConnection = function (listConnectedDevices) {
 
   socket.on("end", function () {
     console.log("ending");
+    incomingDataCfa = [];
   });
 
   socket.on("timeout", function () {
@@ -81,7 +82,7 @@ module.exports.tCPConnection = function (listConnectedDevices) {
   });
 
   socket.on("close", function () {
-    console.log("connection Socket closed");
+    // console.log("connection Socket closed");
     incomingDataCfa = [];
     tCPConnection();
   });

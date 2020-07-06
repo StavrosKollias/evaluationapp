@@ -4,6 +4,9 @@ const tcpip = require("./assets/js/tcpipdata");
 var connectedDevice;
 back.on("give Me Devices", function () {
   udp.startUPDdeviceTable();
+  if (connectedDevice != undefined || connectedDevice != null) {
+    back.send("connected Device", connectedDevice);
+  }
 });
 
 back.on("connected Device", function (device) {

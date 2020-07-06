@@ -40,6 +40,8 @@
 @purplelightlogo: #853ddd;
 @purpledarklogo: #764b9e;
 @logoblue: #0c569a;
+@lightblue: #5896dd;
+@gray: #808080;
 
 // buttons
 
@@ -83,8 +85,8 @@ button {
   }
 
   &.disableBtn {
-    color: white;
-    background-color: gray !important;
+    color: @white;
+    background-color: @gray !important;
     pointer-events: none;
   }
   &.start-learning {
@@ -96,14 +98,18 @@ button {
     visibility: hidden;
   }
   &.connection-btn {
-    background-color: green;
+    background-color: @green;
   }
   &.disconnect-btn {
     background-color: rgb(177, 57, 57);
   }
 
   &.print {
-    background-color: rgb(221, 88, 88);
+    background-color: @lightblue;
+  }
+
+  &.scan {
+    background-color: @blue;
   }
 
   &.menu-btn {
@@ -120,6 +126,33 @@ body {
   &.mobile {
     overflow: hidden;
   }
+}
+
+.loader {
+  color: @logoblue;
+  position: absolute;
+  transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  -webkit-transform-origin: 50% 50%;
+  -o-transform-origin: 50% 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  font-size: 20px;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  text-indent: -9999em;
+  -webkit-animation: load4 1.3s infinite linear;
+  animation: load4 1.3s infinite linear;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .wifi-connection-container {
@@ -143,34 +176,6 @@ body {
     opacity: 1;
   }
 
-  .loader {
-    color: @logoblue;
-    position: absolute;
-    transform-origin: 50% 50%;
-    -moz-transform-origin: 50% 50%;
-    -ms-transform-origin: 50% 50%;
-    -webkit-transform-origin: 50% 50%;
-    -o-transform-origin: 50% 50%;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-    font-size: 20px;
-    width: 1em;
-    height: 1em;
-    border-radius: 50%;
-    position: relative;
-    text-indent: -9999em;
-    -webkit-animation: load4 1.3s infinite linear;
-    animation: load4 1.3s infinite linear;
-    -webkit-transform: translateZ(0);
-    -ms-transform: translateZ(0);
-    transform: translateZ(0);
-  }
-
   .wifi-list-container {
     width: auto;
     height: auto;
@@ -182,12 +187,12 @@ body {
     -webkit-transform-origin: 50% 50%;
     -o-transform-origin: 50% 50%;
     left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
+    top: 0;
+    transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
     &.active {
       display: block;
     }
@@ -563,7 +568,10 @@ body {
 }
 
 .container {
+  position: relative;
   width: 100%;
+  min-height: 100vh;
+  overflow-y: scroll;
   display: flex;
   flex-direction: column;
   background-color: @white;
