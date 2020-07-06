@@ -26,7 +26,6 @@ function createRecord(stringRecord, ipItem) {
     arrayDeviceResponse[1],
     address
   );
-  //console.log(device);
   return device;
 }
 

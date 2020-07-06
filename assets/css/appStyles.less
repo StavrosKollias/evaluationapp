@@ -60,7 +60,7 @@
 button {
   border: unset;
   padding: 0.4rem 0.5rem;
-  width: 100px;
+  width: 110px;
   height: 50px;
   color: @white;
   transition: all 0.3s ease-in-out;
@@ -73,7 +73,7 @@ button {
     cursor: pointer;
     &:after {
       content: "";
-      background-color: fade(#f7f4f4, 20%) !important;
+      background-color: fade(@white, 20%) !important;
       width: 100%;
       height: 100%;
       z-index: 1;
@@ -204,6 +204,7 @@ body {
 
     .wifi-networks-list {
       list-style: none;
+      padding: 0em;
 
       .wifi-item {
         padding: 1rem;
@@ -222,7 +223,7 @@ body {
   }
 
   .popUp-connect {
-    .display-flex-column(center,space-evenly);
+    .display-flex-column(center,Flex-start);
     display: none;
     height: 100%;
     position: fixed;
@@ -232,14 +233,27 @@ body {
     left: 0;
     top: 0;
 
-    .password-inpunt-container {
-      width: 80%;
-      .display-flex-column(center, center);
-    }
-
-    .network-buttons-container {
+    .network-details {
       width: 100%;
-      .display-flex-row(center, space-evenly);
+      padding: 1rem 0;
+      .ssid {
+        text-align: center;
+        width: 50%;
+        margin: auto;
+        min-width: 300px;
+      }
+      .password-inpunt-container {
+        .display-flex-column(center, center);
+        width: 80%;
+        margin: auto;
+      }
+
+      .network-buttons-container {
+        .display-flex-row(center, space-evenly);
+        width: 100%;
+        padding: 2rem 0;
+        margin: auto;
+      }
     }
 
     &.active {
@@ -290,6 +304,7 @@ body {
 
     .title {
       text-align: start;
+      margin: auto;
       width: 30%;
       font-size: 55px;
       max-width: 300px;
@@ -307,6 +322,7 @@ body {
 
     .image-container {
       width: 100%;
+      margin: auto;
       max-width: 200px;
       min-width: 150px;
       img {
@@ -408,7 +424,7 @@ body {
 .navigation-bar {
   .display-flex-row-wrap(center,space-evenly);
   width: 100%;
-  background-color: fade(@black, 50%);
+  background-color: @logoblue;
   height: 100px;
   flex-direction: row;
   position: fixed;
@@ -444,7 +460,7 @@ body {
     .display-flex-column(center, center);
     top: 0;
     display: none;
-    background-color: fade(@black, 80%);
+    background-color: @logoblue;
     overflow-y: auto;
     &:after {
       content: "";
@@ -569,7 +585,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: @white;
-  justify-content: space-evenly;
+  justify-content: start;
   align-items: center;
   visibility: collapse;
   display: none;
