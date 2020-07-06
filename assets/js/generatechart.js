@@ -1,21 +1,18 @@
 var ispausedUpdate = true;
-var newincomingdata = {
-  sequence: "",
-  jobnumber: "",
-  force: "",
-  headroom: "",
-  mJ: "",
-  missMatch: "",
-  result: "",
-};
+var newincomingdata = [];
+// var newincomingdata = {
+//   sequence: "",
+//   jobnumber: "",
+//   force: "",
+//   headroom: "",
+//   mJ: "",
+//   missMatch: "",
+//   result: "",
+// };
 
 front.on("data", function (data) {
-  if (data.sequence !== newincomingdata.sequence) {
-    newincomingdata = data;
-    ispausedUpdate = false;
-  } else {
-    ispausedUpdate = true;
-  }
+  newincomingdata = data;
+  ispausedUpdate = false;
 });
 var evaluationChartForce = document.getElementById("evaluation-chart-force");
 var lineChartData = {
@@ -170,12 +167,19 @@ function getRandomIntInclusive(min, max) {
 }
 
 function generateDataForce(chart) {
-  var newForce = newincomingdata.force.replace("N", "");
-  var newPeak = Number(newForce); //////////////////New force incoming
+  ispausedUpdate = true;
+
   var peakForce = chart.data.datasets[3].data;
-  peakForce.push(newPeak);
   var labels = chart.data.labels;
-  labels.push(String(labels.length + 1));
+  peakForce = [];
+  labels = [];
+  newincomingdata.map((e, i) => {
+    var newForce = e.force.replace("N", "");
+    var newPeak = Number(newForce); //////////////////New force incoming
+    peakForce.push(newPeak);
+    var label = e.sequence;
+    labels.push(label);
+  });
 
   var mean = [];
   var meanvalue = Math.round(

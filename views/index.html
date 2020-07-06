@@ -2,7 +2,6 @@
 <html lang="eng">
   <head>
     <title>Evaluation App</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type" />
     <link rel="stylesheet" type="text/css" href="../assets/normalize.css" />
@@ -39,6 +38,9 @@
 
       <div class="wifi-list-container" id="wifi-list-container">
         <h3 class="networks-title">Available WIFI Netwroks</h3>
+        <button class="scan" id="scan-btn" onclick="scanWifi()">
+          <i class="fas fa-sync-alt"></i>
+        </button>
         <ul class="wifi-networks-list" id="wifi-network-list-container"></ul>
       </div>
       <div class="popUp-connect" id="popUp-connect">
@@ -95,6 +97,7 @@
       <h2 class="section-title error active" id="error-devices-title">
         No Devices found
       </h2>
+      <div class="loader" id="loading-gif-connection">Loading...</div>
       <table id="divice-connection" class="device-connection-table">
         <!-- <tbody></tbody> -->
       </table>
@@ -104,7 +107,7 @@
       <h1 class="section-title">Quick Evaluation</h1>
       <div class="button-container">
         <button class="start-learning" onclick="startLearning(this)">
-          Start Learning
+          Start
         </button>
         <button class="print disableBtn" id="print-btn" onclick="printStats()">
           Print
@@ -137,7 +140,7 @@
         </div>
         <div class="input-container">
           <div for="compliance-spring" class="input-label">
-            Compliance Spring(nm/N)
+            S.Comp(nm/N)
           </div>
           <input
             type="number"
@@ -149,7 +152,7 @@
         </div>
         <div class="input-container">
           <div for="length-spring" class="input-label">
-            Compliance Spring(mm)
+            S.Length(mm)
           </div>
           <input
             type="number"
@@ -179,6 +182,43 @@
             <option value="14">7.0</option>
             <option value="15">7.5</option>
             <option value="16">8.0</option>
+            <option value="17">8.5</option>
+            <option value="18">9.0</option>
+            <option value="19">9.5</option>
+            <option value="20">10.0</option>
+            <option value="21">10.5</option>
+            <option value="22">11.0</option>
+            <option value="23">11.5</option>
+            <option value="24">12.0</option>
+            <option value="25">12.5</option>
+            <option value="26">13.0</option>
+            <option value="27">13.5</option>
+            <option value="28">14.0</option>
+            <option value="29">15.0</option>
+            <option value="30">15.5</option>
+            <option value="31">16.0</option>
+            <option value="32">16.5</option>
+            <option value="33">17.0</option>
+            <option value="34">17.5</option>
+            <option value="35">18.0</option>
+            <option value="36">18.5</option>
+            <option value="37">19.0</option>
+            <option value="38">19.5</option>
+            <option value="39">20.0</option>
+            <option value="40">20.5</option>
+            <option value="41">21.0</option>
+            <option value="42">21.5</option>
+            <option value="43">22.0</option>
+            <option value="44">22.5</option>
+            <option value="45">23.0</option>
+            <option value="46">23.5</option>
+            <option value="47">24.0</option>
+            <option value="48">24.5</option>
+            <option value="49">25.0</option>
+            <option value="50">25.5</option>
+            <option value="51">26.0</option>
+            <option value="52">26.5</option>
+            <option value="53">27.0</option>
           </select>
         </div>
 
@@ -456,14 +496,20 @@ Gold Calibrated 02/Dec/2019</textarea
       <!-- <div class="log-connection" id="log"></div> -->
       <!-- Compliance PopUp -->
       <div class="compliance-popup" id="compliance-popup">
-        <div
-          class="close-popup-btn"
-          id="close-comp-popup-btn"
+        <div class="vcp-container">I will display the VCP</div>
+        I am the compliance pop up
+
+        <button
+          data-role="none"
+          class="delete"
+          id="eval-save"
           onclick="handleCompliancePopup()"
         >
-          <div class="btn"></div>
-        </div>
-        I am the compliance pop up
+          Exit
+        </button>
+        <button class="start-learning" onclick="startLearning(this)">
+          Start Learning
+        </button>
       </div>
 
       <div class="instructions-container" id="instructions-eval">

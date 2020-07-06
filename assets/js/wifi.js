@@ -3,11 +3,37 @@ const wifiListcontainer = document.getElementById(
   "wifi-network-list-container"
 );
 const containerlist = document.getElementById("wifi-list-container");
+const refreshBtn = document.getElementById("scan-btn");
+
+function disablerefreshbtn() {
+  if (!refreshBtn.disabled) {
+    refreshBtn.disabled = true;
+  } else {
+    refreshBtn.disabled = false;
+  }
+}
+
+function removeChildrenWifiList() {
+  var childrenLength = wifiListcontainer.children.length;
+  if (childrenLength > 0) {
+    for (i = 0; i <= childrenLength - 1; i++) {
+      wifiListcontainer.removeChild(wifiListcontainer.children[0]);
+    }
+  }
+  loadingWifi.style.display = "block";
+}
 
 function scanWifi() {
+  disablerefreshbtn();
+  removeChildrenWifiList();
   new Promise(function (resolve, reject) {
     console.log("before enable:" + app.wifi.getState());
-    app.wifi.enable();
+    if (app.wifi.isEnabled()) {
+      app.wifi.disconnect();
+    } else {
+      app.wifi.enable();
+    }
+
     setTimeout(resolve, 5000);
   }).then(function () {
     let available_networks = app.wifi.getScanResults();
@@ -15,12 +41,15 @@ function scanWifi() {
     var networksLength = available_networks.length;
     console.log("after enable:" + app.wifi.getState());
     if (networksLength > 0) {
+      disablerefreshbtn();
       loadingWifi.style.display = "none";
       console.log(available_networks);
       containerlist.classList.add("active");
       available_networks.map((network, i) => {
         generateWifiList(network, i);
       });
+    } else {
+      scanWifi();
     }
   });
 }
@@ -49,12 +78,16 @@ function generateWifiList(networkObj, i) {
 function connectToWifi(ssid, pass) {
   app.wifi.connect(ssid, pass);
   var status = checkConnection();
-  // if (status > 0) {
-  // console.log(status);
-  document.getElementById("popUp-connect").classList.remove("active");
-  document.getElementById("wifi-container").classList.remove("active");
-  front.send("give Me Devices");
-  // }
+  setTimeout(() => {
+    if (status > 1) {
+      // console.log(status);
+      document.getElementById("popUp-connect").classList.remove("active");
+      document.getElementById("wifi-container").classList.remove("active");
+      setTimeout(() => {
+        front.send("give Me Devices");
+      }, 5000);
+    }
+  }, 1000);
 }
 
 function checkConnection() {

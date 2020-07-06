@@ -1,9 +1,8 @@
 const networkBall = document.getElementById("network-circle");
 
-var connection =
-  navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+var connection = app.wifi.getState();
 setInterval(() => {
-  if (connection.rtt > 0) {
+  if (connection > 1) {
     networkBall.classList.add("active");
   } else {
     networkBall.classList.remove("active");

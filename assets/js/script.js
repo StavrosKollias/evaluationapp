@@ -15,7 +15,7 @@ front.on("devices", function (devices) {
   });
 
   if (connectedDevice != undefined) {
-    actionDevices(devices, device);
+    actionDevices(devices, connectedDevice);
   } else {
     actionDevices(devices);
   }

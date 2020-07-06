@@ -63,10 +63,11 @@ module.exports.tCPConnection = function (listConnectedDevices) {
       console.log("contains CFA results overview");
       res = body.slice(0, 49);
       var result = generateData(res);
-      dataLength = incomingDataCfa.length;
+
       incomingDataCfa.push(result);
+      dataLength = incomingDataCfa.length;
       if (dataLength > 2) {
-        back.send("data", result);
+        back.send("data", incomingDataCfa);
       }
     }
   });
@@ -82,6 +83,7 @@ module.exports.tCPConnection = function (listConnectedDevices) {
   socket.on("close", function () {
     console.log("connection Socket closed");
     incomingDataCfa = [];
+    tCPConnection();
   });
 
   socket.on("error", function (err) {
