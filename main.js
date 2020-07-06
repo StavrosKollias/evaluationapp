@@ -1,12 +1,8 @@
 const back = require("androidjs").back;
-const http = require("http");
-//.createServer();
 const udp = require("./assets/js/udpComunication");
 const tcpip = require("./assets/js/tcpipdata");
 var connectedDevice;
-// http.listen(3001);
 back.on("give Me Devices", function () {
-  // back.send("hello", "hello i am on it");
   udp.startUPDdeviceTable();
 });
 
