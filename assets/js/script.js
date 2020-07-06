@@ -9,19 +9,37 @@ var devicesNetwork;
 
 front.on("devices", function (devices) {
   devicesNetwork = devices;
-  actionDevices(devices);
+  var connectedDevice;
+  front.on("connected Device", (device) => {
+    connectedDevice = device;
+  });
+
+  if (connectedDevice != undefined) {
+    actionDevices(devices, device);
+  } else {
+    actionDevices(devices);
+  }
 });
 
 front.on("connected", function (device) {
   console.log(device);
 });
 
-function actionDevices(devices) {
+function actionDevices(devices, device) {
   var errorTitle = document.getElementById("error-devices-title");
+  var loadinggifConnection = document.getElementById("loading-gif-connection");
   var connectedDevices = checkDevicesNetwork(devices);
   if (connectedDevices) {
-    adddevices(devicesNetwork);
+    if (device != undefined) {
+      adddevices(devicesNetwork, device);
+    } else {
+      adddevices(devicesNetwork);
+    }
+
     errorTitle.classList.remove("active");
+    loadinggifConnection.style.display = "none";
+  } else {
+    loadinggifConnection.style.display = "block";
   }
 }
 
@@ -64,43 +82,33 @@ handleClickconnectDevice = (e) => {
     button.innerText = "Disconnect";
     button.classList.remove("connection-btn");
     button.classList.add("disconnect-btn");
-
     connectionbuttons.map((e, i) => {
       if (buttonId != e.id) {
         e.classList.add("disableBtn");
       }
     });
     enableNavBtns(true);
-    sendDeviceSelected(deviceCon, true);
   } else {
     front.send("connected Device", null);
     button.innerText = "Connect";
     button.classList.add("connection-btn");
     button.classList.remove("disconnect-btn");
-
     connectionbuttons.map((e, i) => {
       if (buttonId != e.id) {
         e.classList.remove("disableBtn");
       }
     });
     enableNavBtns(false);
-    sendDeviceSelected(deviceCon, false);
   }
 };
 
-sendDeviceSelected = (deviceCon, flag) => {
-  var post = { deviceCon: deviceCon, flag: flag };
-  // front.send("/connectdevice", post);
-};
-
-adddevices = (devicesNetwork) => {
+adddevices = (devicesNetwork, device) => {
   var devicestable = document.getElementById("divice-connection");
   if (devicestable.children.length > 0) {
     devicestable.removeChild(devicestable.children[0]);
   }
 
   var tablebody = document.createElement("tbody");
-  //var tablebody = devicestable.children[0];
   addTitleDeviceTable(devicestable, tablebody);
   devicesNetwork.map((e, i) => {
     var tr = document.createElement("tr");
@@ -120,12 +128,35 @@ adddevices = (devicesNetwork) => {
         td.appendChild(macaddress);
       }
       if (j == 3) {
-        var btntext = document.createTextNode("Connect");
         var button = document.createElement("button");
+        if (device != undefined) {
+          if (e.hostname == device.hostname) {
+            var btntext = document.createTextNode("Disconnect");
+            button.setAttribute("class", "disconnect-btn");
+          } else {
+            var btntext = document.createTextNode("Connect");
+            button.setAttribute("class", "disableBtn");
+          }
+        } else {
+          var btntext = document.createTextNode("Connect");
+          var button = document.createElement("button");
+        }
+
         button.appendChild(btntext);
         td.appendChild(button);
 
-        button.setAttribute("class", "connection-btn");
+        if (device != undefined) {
+          if (e.hostname == device.hostname) {
+            button.setAttribute("class", "disconnect-btn");
+          } else {
+            var btntext = document.createTextNode("Connect");
+            button.setAttribute("class", "disableBtn");
+            button.setAttribute("class", "connection-btn");
+          }
+        } else {
+          button.setAttribute("class", "connection-btn");
+        }
+
         button.setAttribute("id", e.hostname);
         button.addEventListener("click", (e) => handleClickconnectDevice(e));
       }
@@ -134,7 +165,6 @@ adddevices = (devicesNetwork) => {
     }
     tablebody.appendChild(tr);
   });
-  // hostname;
 };
 
 addTitleDeviceTable = (table, body) => {
