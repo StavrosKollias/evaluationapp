@@ -35,18 +35,18 @@ front.on("error Request", function (msg) {
 
 // ---------------Functions----------------//
 function startLearning(element) {
-  var string = element.innerHTML;
-  if (string == "Start Learning") {
+  var string = element.innerText;
+  if (string == "Start") {
     front.send("start learning");
     // ispausedUpdate = false;
-    element.innerHTML = "Stop Capturing";
+    element.innerText = "Stop";
     element.style.backgroundColor = "red";
     resetCharts(lineChartForce, lineChartHeight);
     var printbtn = document.getElementById("print-btn");
     printbtn.classList.add("disableBtn");
   } else {
     // ispausedUpdate = true;
-    element.innerHTML = "Start Learning";
+    element.innerText = "Start";
     element.style.backgroundColor = "green";
   }
 }

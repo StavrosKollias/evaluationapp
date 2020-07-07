@@ -1,7 +1,7 @@
 const networkBall = document.getElementById("network-circle");
 
-var connection = app.wifi.getState();
 setInterval(() => {
+  var connection = app.wifi.getState();
   if (connection > 1) {
     networkBall.classList.add("active");
   } else {

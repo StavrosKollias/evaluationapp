@@ -1,6 +1,7 @@
 const back = require("androidjs").back;
 const udp = require("./assets/js/udpComunication");
 const tcpip = require("./assets/js/tcpipdata");
+const http = require("http");
 var ip = require("ip");
 
 var connectedDevice;

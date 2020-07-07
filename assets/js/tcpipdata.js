@@ -63,7 +63,6 @@ module.exports.tCPConnection = function (listConnectedDevices) {
       console.log("contains CFA results overview");
       res = body.slice(0, 49);
       var result = generateData(res);
-
       incomingDataCfa.push(result);
       dataLength = incomingDataCfa.length;
       if (dataLength > 2) {
