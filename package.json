@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "name": "evaluationapp",
-  "app-name": "cmd",
+  "app-name": "Portable Evaluation",
   "package-name": "webview",
   "project-type": "webview",
   "icon": "./assets/icon/icon.png",
@@ -32,6 +32,7 @@
     "jsdom": "^16.2.2",
     "net": "^1.0.2",
     "netcat": "^1.5.0",
+    "network": "^0.5.0",
     "network-list": "^1.1.5",
     "socket.io": "^2.3.0"
   },

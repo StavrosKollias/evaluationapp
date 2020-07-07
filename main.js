@@ -1,6 +1,8 @@
 const back = require("androidjs").back;
 const udp = require("./assets/js/udpComunication");
 const tcpip = require("./assets/js/tcpipdata");
+var ip = require("ip");
+
 var connectedDevice;
 back.on("give Me Devices", function () {
   udp.startUPDdeviceTable();
@@ -53,6 +55,22 @@ back.on("start learning", function () {
   startLearning(connectedDevice.ip);
   tcpip.tCPConnection(connectedDevice);
 });
+//  wifi connection check
+back.on("WIFI connect", function (details) {
+  sendResponse(details);
+});
+
+function sendResponse(details) {
+  var ipaddress = checkIPaddress();
+  var arrayNet = [ipaddress, details[0]];
+  back.send("WIFI connection result", arrayNet);
+}
+
+function checkIPaddress() {
+  var ipaddress = ip.address();
+  return ipaddress;
+}
+
 // http
 //   .get(`http://CFA_0993FB/buttons.cgi?btn=G3Local_StartLearning`, (resp) => {
 //     let data = "";

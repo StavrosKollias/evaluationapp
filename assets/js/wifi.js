@@ -27,11 +27,14 @@ function scanWifi() {
   disablerefreshbtn();
   removeChildrenWifiList();
   new Promise(function (resolve, reject) {
-    console.log("before enable:" + app.wifi.getState());
     if (app.wifi.isEnabled()) {
       app.wifi.disconnect();
+      console.log("not connected:" + app.wifi.getState());
     } else {
       app.wifi.enable();
+      console.log("wifi Enabled:" + app.wifi.getState());
+      app.wifi.disconnect();
+      console.log("wifi Enabled not connected:" + app.wifi.getState());
     }
 
     setTimeout(resolve, 5000);
@@ -39,7 +42,7 @@ function scanWifi() {
     let available_networks = app.wifi.getScanResults();
     console.log(available_networks);
     var networksLength = available_networks.length;
-    console.log("after enable:" + app.wifi.getState());
+    console.log("getting networks:" + app.wifi.getState());
     if (networksLength > 0) {
       disablerefreshbtn();
       loadingWifi.style.display = "none";
@@ -76,20 +79,43 @@ function generateWifiList(networkObj, i) {
 }
 
 function connectToWifi(ssid, pass) {
+  app.wifi.disconnect();
+  var details = [ssid, pass];
+  // "error Wifi connection"
   app.wifi.connect(ssid, pass);
-  var status = checkConnection();
   setTimeout(() => {
-    if (status > 1) {
+    front.send("WIFI connect", details);
+  }, 5000);
+}
+
+front.on("WIFI connection result", function (arrayNet) {
+  var errorEl = document.getElementById("error-connection-WIFI");
+  if (arrayNet[0] != "127.0.0.1") {
+    errorEl.style.display = "none";
+    var status = checkConnection();
+    requestDevicesAfterConnection(status);
+  } else {
+    errorEl.innerText = "Error connecting to: " + arrayNet[1];
+    errorEl.style.display = "block";
+  }
+});
+
+front.on("networksnode", function (msg) {
+  alert(msg);
+});
+
+function requestDevicesAfterConnection(status) {
+  setTimeout(() => {
+    if (status > 2) {
       // console.log(status);
       document.getElementById("popUp-connect").classList.remove("active");
       document.getElementById("wifi-container").classList.remove("active");
       setTimeout(() => {
         front.send("give Me Devices");
-      }, 5000);
+      }, 3000);
     }
   }, 1000);
 }
-
 function checkConnection() {
   let connectionStatus = app.wifi.getState();
   console.log("after connection enable:" + app.wifi.getState());
@@ -102,3 +128,8 @@ function handleWifiItemClick(e) {
   document.getElementById("ssid-connect").innerText = e.target.innerText;
   document.getElementById("network-password").focus();
 }
+
+setInterval(() => {
+  var status = app.wifi.getState();
+  console.log(status);
+}, 2000);

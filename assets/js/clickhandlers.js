@@ -23,7 +23,7 @@ const introductionContainer = document.getElementById("introduction");
 
 const cancelWifiConnectbtn = document.getElementById("cancel-connection");
 const connectWifiNetwork = document.getElementById("connect-network");
-
+app.toast.show("Circuitmaster Designs Ltd 2020", 1);
 setTimeout(() => {
   introductionContainer.classList.remove("active");
   scanWifi();
