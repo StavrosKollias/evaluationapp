@@ -1,6 +1,7 @@
 var net = require("net");
 const back = require("androidjs").back;
 var incomingDataCfa = [];
+
 function generateData(incomingstring) {
   // "CFA|S68280#12 [97%] 1879N=OK 327mJ (3/50) PA"
   var splitString = incomingstring.split("|");
@@ -16,8 +17,6 @@ function generateData(incomingstring) {
   var force = splitForceString[0];
   var mJ = splitResultString[3];
   var missMatchResult = splitResultString[4];
-  var x = missMatchResult.replace(")", "");
-  var y = x.replace(")", "");
   var missMatch = missMatchResult.split(")").join("").split("(").join("");
   var result = splitResultString[5];
   var incommingResult = {
@@ -32,9 +31,29 @@ function generateData(incomingstring) {
   return incommingResult;
 }
 
-module.exports.tCPConnection = function (listConnectedDevices) {
+var globalString = "";
+function stringRechievedData(stringRecieved) {
+  globalString += stringRecieved;
+  return globalString;
+}
+
+function splitCarageReturn(string) {
+  var arradyData = string.split(/\n/);
+  console.log(arradyData);
+  var resultsarray = [];
+
+  arradyData.map((e, i) => {
+    if (e.includes("CFA|")) {
+      resultsarray.push(e);
+    }
+  });
+
+  return resultsarray;
+}
+
+module.exports.tCPConnection = function (ip) {
   var port = 9760;
-  var host = listConnectedDevices.ip;
+  var host = ip;
   var socket = net.connect(port, host);
 
   socket.setEncoding("utf8");
@@ -42,31 +61,38 @@ module.exports.tCPConnection = function (listConnectedDevices) {
     console.log("connecting");
     incomingDataCfa = [];
   });
-  let res;
   socket.on("ready", function () {
-    // console.log("ready");
     socket.write("f\r\n");
     setInterval(() => {
       socket.write("\r\n");
-    }, 5000);
+    }, 4000);
   });
 
-  var count = 0;
   let body = "";
 
   socket.on("data", function (data) {
-    count += 1;
     //"CFA|S68280#12 [97%] 1879N=OK 327mJ (3/50) PA"
     body = "";
     body += data.toString();
-    if (body.includes("CFA")) {
-      console.log("contains CFA results overview");
-      res = body.slice(0, 49);
-      var result = generateData(res);
-      incomingDataCfa.push(result);
-      dataLength = incomingDataCfa.length;
-      if (dataLength > 2) {
-        back.send("data", incomingDataCfa);
+    // var allbody = stringRechievedData(body);
+    // var newData = splitCarageReturn(allbody);
+    if (body.includes("CFA|")) {
+      var index = body.indexOf("CFA|");
+      var processedString = splitCarageReturn(body);
+      if (processedString.length > 0) {
+        processedString.map((e) => {
+          var res = e;
+          back.send("data back end ", res);
+          var result = generateData(res);
+          incomingDataCfa.push(result);
+        });
+        dataLength = incomingDataCfa.length;
+
+        if (dataLength > 3) {
+          console.log(incomingDataCfa);
+          var productionData = incomingDataCfa.slice(3);
+          back.send("data", productionData);
+        }
       }
     }
   });
@@ -74,21 +100,22 @@ module.exports.tCPConnection = function (listConnectedDevices) {
   socket.on("end", function () {
     console.log("ending");
     incomingDataCfa = [];
+    back.send("error tcpip", "Ending");
   });
 
   socket.on("timeout", function () {
     console.log("timeout");
+    back.send("error tcpip", "Timed out");
   });
 
   socket.on("close", function () {
-    // console.log("connection Socket closed");
     incomingDataCfa = [];
-    tCPConnection();
+    back.send("error tcpip", "Closing");
   });
 
   socket.on("error", function (err) {
     console.log("Error");
-    console.log(err);
+    back.send("error tcpip", "Error");
   });
 };
 

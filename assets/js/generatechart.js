@@ -1,4 +1,4 @@
-var ispausedUpdate = true;
+var ispausedUpdate = false;
 var newincomingdata = [];
 // var newincomingdata = {
 //   sequence: "",
@@ -10,9 +10,20 @@ var newincomingdata = [];
 //   result: "",
 // };
 
+front.on("data back end ", (msg) => {
+  console.log(msg);
+  //alert(msg);
+});
+front.on("error tcpip", (msg) => {
+  console.log(msg);
+  alert(msg);
+});
+
 front.on("data", function (data) {
   newincomingdata = data;
-  ispausedUpdate = false;
+  if (!ispausedUpdate) {
+    generateDataForce(lineChartForce);
+  }
 });
 var evaluationChartForce = document.getElementById("evaluation-chart-force");
 var lineChartData = {
@@ -168,7 +179,6 @@ function getRandomIntInclusive(min, max) {
 
 function generateDataForce(chart) {
   ispausedUpdate = true;
-
   var peakForce = chart.data.datasets[3].data;
   var labels = chart.data.labels;
   peakForce = [];
@@ -177,7 +187,7 @@ function generateDataForce(chart) {
     var newForce = e.force.replace("N", "");
     var newPeak = Number(newForce); //////////////////New force incoming
     peakForce.push(newPeak);
-    var label = e.sequence;
+    var label = Number(e.sequence) - 3;
     labels.push(label);
   });
 
@@ -236,7 +246,6 @@ function generateDataForce(chart) {
   }
   addNewDataChartForce(chart, peakForce, mean, uslforce, lslforce, labels);
   generateDataHeight(lineChartHeight, peakForce, labels);
-  ispausedUpdate = true;
 }
 
 function addNewDataChartForce(chart, peakForce, mean, USL, LSL, labels) {
@@ -534,6 +543,7 @@ function generateDataHeight(chart, peakForce, labels) {
   }
 
   addNewDataChartheight(chart, heightarr, mean, uslheight, lslheight, labels);
+  ispausedUpdate = false;
 }
 
 function addNewDataChartheight(chart, heightarr, mean, USL, LSL, labels) {
@@ -645,9 +655,3 @@ function resetCharts(chartForce, chartheight) {
 
   chartheight.update();
 }
-
-window.setInterval(() => {
-  if (!ispausedUpdate) {
-    generateDataForce(lineChartForce);
-  }
-}, 1000);

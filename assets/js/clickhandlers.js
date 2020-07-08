@@ -38,14 +38,12 @@ function startLearning(element) {
   var string = element.innerText;
   if (string == "Start") {
     front.send("start learning");
-    // ispausedUpdate = false;
     element.innerText = "Stop";
     element.style.backgroundColor = "red";
     resetCharts(lineChartForce, lineChartHeight);
     var printbtn = document.getElementById("print-btn");
     printbtn.classList.add("disableBtn");
   } else {
-    // ispausedUpdate = true;
     element.innerText = "Start";
     element.style.backgroundColor = "green";
   }
