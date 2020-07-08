@@ -3,7 +3,6 @@ const udp = require("./assets/js/udpComunication");
 const tcpip = require("./assets/js/tcpipdata");
 const http = require("http");
 var ip = require("ip");
-
 var connectedDevice;
 back.on("give Me Devices", function () {
   udp.startUPDdeviceTable();

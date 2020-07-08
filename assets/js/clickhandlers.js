@@ -35,18 +35,10 @@ front.on("error Request", function (msg) {
 
 // ---------------Functions----------------//
 function startLearning(element) {
-  var string = element.innerText;
-  if (string == "Start") {
-    front.send("start learning");
-    element.innerText = "Stop";
-    element.style.backgroundColor = "red";
-    resetCharts(lineChartForce, lineChartHeight);
-    var printbtn = document.getElementById("print-btn");
-    printbtn.classList.add("disableBtn");
-  } else {
-    element.innerText = "Start";
-    element.style.backgroundColor = "green";
-  }
+  front.send("start learning");
+  resetCharts(lineChartForce, lineChartHeight);
+  var printbtn = document.getElementById("print-btn");
+  printbtn.classList.add("disableBtn");
 }
 
 function visiblefPassword() {

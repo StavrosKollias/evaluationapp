@@ -254,12 +254,14 @@ function addNewDataChartForce(chart, peakForce, mean, USL, LSL, labels) {
   chart.data.datasets[2].data = LSL;
   chart.data.labels = labels;
   chart.data.datasets[3].data = peakForce;
+  var chartMin = Math.min(...peakForce, LSL[0]);
+  var chartMax = Math.max(...peakForce, USL[0]);
+  var dataSpan = chartMax - chartMin;
+  chartMin -= 0.05 * dataSpan;
+  chartMax += 0.05 * dataSpan;
+  var minforce = Math.floor(chartMin / 100) * 100;
+  var maxforce = Math.ceil(chartMax / 100) * 100;
 
-  var minforce = Math.min(...peakForce, LSL[0]);
-  var maxforce = Math.max(...peakForce, USL[0]);
-
-  minforce = Math.floor((minforce - 0.05 * minforce) / 100) * 100;
-  maxforce = Math.ceil((maxforce + 0.005 * maxforce) / 100) * 100;
   var options = {
     bezierCurve: false,
     responsive: true,
@@ -323,7 +325,9 @@ function addNewDataChartForce(chart, peakForce, mean, USL, LSL, labels) {
           },
           ticks: {
             fontSize: 15,
+            precision: 0,
             fontColor: "black", // this here
+            maxTicksLimit: 10,
             beginAtZero: false,
             min: minforce,
             max: maxforce,
