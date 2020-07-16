@@ -31,12 +31,6 @@ function generateData(incomingstring) {
   return incommingResult;
 }
 
-var globalString = "";
-function stringRechievedData(stringRecieved) {
-  globalString += stringRecieved;
-  return globalString;
-}
-
 function splitCarageReturn(string) {
   var arradyData = string.split(/\n/);
   console.log(arradyData);
@@ -49,6 +43,34 @@ function splitCarageReturn(string) {
   });
 
   return resultsarray;
+}
+
+function indcomingDataHandle(body) {
+  var index = body.indexOf("CFA|");
+  var processedString = splitCarageReturn(body);
+
+  if (processedString.length > 0) {
+    processedString.map((e) => {
+      var res = e;
+      if (res.includes("T3")) {
+        back.send("reset charts", "reset");
+        incomingDataCfa = [];
+        var result = generateData(res);
+        incomingDataCfa.push(result);
+      } else {
+        var result = generateData(res);
+        incomingDataCfa.push(result);
+      }
+      back.send("data back end ", res);
+    });
+    dataLength = incomingDataCfa.length;
+
+    if (dataLength > 3) {
+      console.log(incomingDataCfa);
+      var productionData = incomingDataCfa.slice(3);
+      back.send("data", productionData);
+    }
+  }
 }
 
 module.exports.tCPConnection = function (ip) {
@@ -74,33 +96,15 @@ module.exports.tCPConnection = function (ip) {
     //"CFA|S68280#12 [97%] 1879N=OK 327mJ (3/50) PA"
     body = "";
     body += data.toString();
-    // var allbody = stringRechievedData(body);
-    // var newData = splitCarageReturn(allbody);
     if (body.includes("CFA|")) {
-      var index = body.indexOf("CFA|");
-      var processedString = splitCarageReturn(body);
-      if (processedString.length > 0) {
-        processedString.map((e) => {
-          var res = e;
-          back.send("data back end ", res);
-          var result = generateData(res);
-          incomingDataCfa.push(result);
-        });
-        dataLength = incomingDataCfa.length;
-
-        if (dataLength > 3) {
-          console.log(incomingDataCfa);
-          var productionData = incomingDataCfa.slice(3);
-          back.send("data", productionData);
-        }
-      }
+      indcomingDataHandle(body);
     }
   });
 
   socket.on("end", function () {
     console.log("ending");
-    incomingDataCfa = [];
-    back.send("error tcpip", "Ending");
+    //incomingDataCfa = [];
+    back.send("error tcpip", "TCPIP Ending");
   });
 
   socket.on("timeout", function () {
@@ -109,13 +113,15 @@ module.exports.tCPConnection = function (ip) {
   });
 
   socket.on("close", function () {
-    incomingDataCfa = [];
-    back.send("error tcpip", "Closing");
+    //incomingDataCfa = [];
+    back.send("error tcpip", "TCPIP closed Connection Lost Start Learning");
+    // socket.connect();
+    // tCPConnection(host);
   });
 
   socket.on("error", function (err) {
     console.log("Error");
-    back.send("error tcpip", "Error");
+    back.send("error tcpip", "TCPIP Error");
   });
 };
 

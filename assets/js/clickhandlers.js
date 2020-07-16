@@ -33,6 +33,10 @@ front.on("error Request", function (msg) {
   alert(msg);
 });
 
+front.on("reset charts", (msg) => {
+  resetCharts(lineChartForce, lineChartHeight);
+});
+
 // ---------------Functions----------------//
 function startLearning(element) {
   front.send("start learning");
@@ -164,10 +168,23 @@ function handleEvaluationInstructions() {
   }
 }
 
+function visibleSettings() {
+  const inputSettingsContainer = document.getElementsByClassName(
+    "inputs-container"
+  )[0];
+  const classListInputsContainer = inputSettingsContainer.classList.length;
+  if (classListInputsContainer == 1) {
+    inputSettingsContainer.classList.add("active");
+  } else {
+    inputSettingsContainer.classList.remove("active");
+  }
+}
+
 cancelWifiConnectbtn.addEventListener("click", (e) => {
   var popupConnect = document.getElementById("popUp-connect");
   popupConnect.classList.remove("active");
   document.getElementById("network-password").value = "";
+  document.getElementById("error-connection-WIFI").style.display = "none";
 });
 connectWifiNetwork.addEventListener("click", (e) => {
   const ssid = document.getElementById("ssid-connect").innerText;

@@ -4,6 +4,7 @@ const tcpip = require("./assets/js/tcpipdata");
 const http = require("http");
 var ip = require("ip");
 var connectedDevice;
+var counterIpAddress = 0;
 back.on("give Me Devices", function () {
   udp.startUPDdeviceTable();
   if (connectedDevice != undefined && connectedDevice != null) {
@@ -24,41 +25,41 @@ function connectDevice(device) {
     back.send("connected", device);
   }
 }
-
 function startLearning(ip) {
   http
     .get(`http://${ip}/buttons.cgi?btn=G3Local_StartLearning`, (resp) => {
       let data = "";
-
-      // A chunk of data has been recieved.
-      resp.on("data", (chunk) => {
-        data += chunk;
-      });
-
-      // The whole response has been received. Print out the result.
       resp.on("end", () => {
         console.log(data);
       });
     })
     .on("error", (err) => {
       console.log("Error: " + err.message);
-      back.send("error Request", err.message);
     });
 }
-
 back.on("start learning", function () {
   startLearning(connectedDevice.ip);
   tcpip.tCPConnection(connectedDevice.ip);
 });
-//  wifi connection check
 back.on("WIFI connect", function (details) {
   sendResponse(details);
 });
-
 function sendResponse(details) {
-  var ipaddress = checkIPaddress();
-  var arrayNet = [ipaddress, details[0]];
-  back.send("WIFI connection result", arrayNet);
+  counterIpAddress = 0;
+  checkIploop(details);
+}
+
+function checkIploop(details) {
+  setTimeout(() => {
+    counterIpAddress += 1;
+    var ip = checkIPaddress();
+    if (ip == "127.0.0.1" && counterIpAddress < 6) {
+      checkIploop(details);
+    } else {
+      var arrayNet = [ip, details[0]];
+      back.send("WIFI connection result", arrayNet);
+    }
+  }, 200);
 }
 
 function checkIPaddress() {
@@ -66,4 +67,4 @@ function checkIPaddress() {
   return ipaddress;
 }
 
-// tcpip.tCPConnection("10.0.0.66");
+tcpip.tCPConnection("10.0.0.73");

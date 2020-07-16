@@ -29,24 +29,24 @@ function scanWifi() {
   new Promise(function (resolve, reject) {
     if (app.wifi.isEnabled()) {
       app.wifi.disconnect();
-      console.log("not connected:" + app.wifi.getState());
+      //console.log("not connected:" + app.wifi.getState());
     } else {
       app.wifi.enable();
-      console.log("wifi Enabled:" + app.wifi.getState());
+      //console.log("wifi Enabled:" + app.wifi.getState());
       app.wifi.disconnect();
-      console.log("wifi Enabled not connected:" + app.wifi.getState());
+      //console.log("wifi Enabled not connected:" + app.wifi.getState());
     }
 
     setTimeout(resolve, 5000);
   }).then(function () {
     let available_networks = app.wifi.getScanResults();
-    console.log(available_networks);
+    //console.log(available_networks);
     var networksLength = available_networks.length;
-    console.log("getting networks:" + app.wifi.getState());
+    //console.log("getting networks:" + app.wifi.getState());
     if (networksLength > 0) {
       disablerefreshbtn();
       loadingWifi.style.display = "none";
-      console.log(available_networks);
+      //console.log(available_networks);
       containerlist.classList.add("active");
       available_networks.map((network, i) => {
         generateWifiList(network, i);
@@ -83,6 +83,9 @@ function connectToWifi(ssid, pass) {
   var details = [ssid, pass];
   // "error Wifi connection"
   app.wifi.connect(ssid, pass);
+  document.getElementById("network-credentials").style.display = "none";
+  document.getElementById("loading-gif-connection-request").style.display =
+    "block";
   setTimeout(() => {
     front.send("WIFI connect", details);
   }, 5000);
@@ -94,9 +97,15 @@ front.on("WIFI connection result", function (arrayNet) {
     errorEl.style.display = "none";
     var status = checkConnection();
     requestDevicesAfterConnection(status);
+    document.getElementById("network-credentials").style.display = "block";
+    document.getElementById("loading-gif-connection-request").style.display =
+      "none";
   } else {
     errorEl.innerText = "Error connecting to: " + arrayNet[1];
     errorEl.style.display = "block";
+    document.getElementById("loading-gif-connection-request").style.display =
+      "none";
+    document.getElementById("network-credentials").style.display = "block";
   }
 });
 
@@ -118,7 +127,6 @@ function requestDevicesAfterConnection(status) {
 }
 function checkConnection() {
   let connectionStatus = app.wifi.getState();
-  console.log("after connection enable:" + app.wifi.getState());
   return connectionStatus;
 }
 
@@ -128,8 +136,3 @@ function handleWifiItemClick(e) {
   document.getElementById("ssid-connect").innerText = e.target.innerText;
   document.getElementById("network-password").focus();
 }
-
-setInterval(() => {
-  var status = app.wifi.getState();
-  console.log(status);
-}, 2000);

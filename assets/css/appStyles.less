@@ -620,7 +620,7 @@ body {
   }
 
   .button-container {
-    width: 50%;
+    width: 65%;
     margin: auto;
     display: flex;
     justify-content: space-around;
@@ -630,17 +630,35 @@ body {
   .inputs-container {
     display: flex;
     justify-content: space-evenly;
-    padding: 1rem;
+    // padding: 1rem;
+    height: 0;
+    opacity: 0;
     flex-wrap: wrap;
     border: double 5px @black;
     margin: 16px 0;
+    transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+
+    &.active {
+      height: 500px;
+      padding: 1rem;
+      opacity: 1;
+      .input-container {
+        opacity: 1;
+      }
+    }
 
     .input-container {
+      opacity: 0;
       display: flex;
       flex-direction: column;
       justify-content: space-evenly;
       padding: 1rem;
       flex-wrap: wrap;
+      transition: all 0.5s ease-in-out;
+      -o-transition: all 0.5s ease-in-out;
+      -webkit-transition: all 0.5s ease-in-out;
     }
 
     input,

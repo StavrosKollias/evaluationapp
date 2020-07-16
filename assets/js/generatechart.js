@@ -1,22 +1,10 @@
 var ispausedUpdate = false;
 var newincomingdata = [];
-// var newincomingdata = {
-//   sequence: "",
-//   jobnumber: "",
-//   force: "",
-//   headroom: "",
-//   mJ: "",
-//   missMatch: "",
-//   result: "",
-// };
-
 front.on("data back end ", (msg) => {
   console.log(msg);
-  //alert(msg);
 });
 front.on("error tcpip", (msg) => {
   console.log(msg);
-  alert(msg);
 });
 
 front.on("data", function (data) {
@@ -128,6 +116,7 @@ var lineChartForce = new Chart(evaluationChartForce, {
       fontColor: "black",
       labels: {
         fontColor: "black",
+        fontSize: 12,
       },
       onClick: (e) => e.stopPropagation(),
     },
@@ -143,7 +132,7 @@ var lineChartForce = new Chart(evaluationChartForce, {
             display: false,
           },
           ticks: {
-            fontSize: 15,
+            fontSize: 12,
             fontColor: "black", // this here
           },
         },
@@ -157,11 +146,11 @@ var lineChartForce = new Chart(evaluationChartForce, {
           },
           display: true,
           gridLines: {
-            display: true,
+            display: false,
             color: "#824b78",
           },
           ticks: {
-            fontSize: 15,
+            fontSize: 12,
             fontColor: "black", // this here
             beginAtZero: false,
           },
@@ -291,6 +280,7 @@ function addNewDataChartForce(chart, peakForce, mean, USL, LSL, labels) {
       fontColor: "black",
       labels: {
         fontColor: "black",
+        fontSize: 12,
       },
       onClick: (e) => e.stopPropagation(),
     },
@@ -306,7 +296,7 @@ function addNewDataChartForce(chart, peakForce, mean, USL, LSL, labels) {
             display: false,
           },
           ticks: {
-            fontSize: 15,
+            fontSize: 12,
             fontColor: "black", // this here
           },
         },
@@ -320,11 +310,11 @@ function addNewDataChartForce(chart, peakForce, mean, USL, LSL, labels) {
           },
           display: true,
           gridLines: {
-            display: true,
+            display: false,
             color: "#824b78",
           },
           ticks: {
-            fontSize: 15,
+            fontSize: 12,
             precision: 0,
             fontColor: "black", // this here
             maxTicksLimit: 10,
@@ -445,6 +435,7 @@ var lineChartHeight = new Chart(evaluationChartHeight, {
       fontColor: "black",
       labels: {
         fontColor: "black",
+        fontSize: 12,
       },
       onClick: (e) => e.stopPropagation(),
     },
@@ -460,7 +451,7 @@ var lineChartHeight = new Chart(evaluationChartHeight, {
             display: false,
           },
           ticks: {
-            fontSize: 15,
+            fontSize: 12,
             fontColor: "black", // this here
           },
         },
@@ -474,11 +465,11 @@ var lineChartHeight = new Chart(evaluationChartHeight, {
           },
           display: true,
           gridLines: {
-            display: true,
+            display: false,
             color: "#824b78",
           },
           ticks: {
-            fontSize: 15,
+            fontSize: 12,
             fontColor: "black", // this here
             beginAtZero: false,
           },
@@ -593,6 +584,7 @@ function addNewDataChartheight(chart, heightarr, mean, USL, LSL, labels) {
       fontColor: "black",
       labels: {
         fontColor: "black",
+        fontSize: 12,
       },
       onClick: (e) => e.stopPropagation(),
     },
@@ -608,7 +600,7 @@ function addNewDataChartheight(chart, heightarr, mean, USL, LSL, labels) {
             display: false,
           },
           ticks: {
-            fontSize: 15,
+            fontSize: 12,
             fontColor: "black", // this here
           },
         },
@@ -622,11 +614,11 @@ function addNewDataChartheight(chart, heightarr, mean, USL, LSL, labels) {
           },
           display: true,
           gridLines: {
-            display: true,
+            display: false,
             color: "#824b78",
           },
           ticks: {
-            fontSize: 15,
+            fontSize: 12,
             stepSize: 0.01,
             fontColor: "black", // this here
             beginAtZero: false,

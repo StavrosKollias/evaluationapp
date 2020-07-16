@@ -38,6 +38,9 @@
   },
   "project-name": "evaluationapp",
   "theme": {
-    "fullScreen": true
+    "fullScreen": true,
+    "colorAccent": "#FF0000",
+    "colorPrimary": "#00FF00",
+    "colorPrimaryDark": "#FFFFFF"
   }
 }

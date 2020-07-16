@@ -3,11 +3,12 @@ const back = require("androidjs").back;
 var dgram = require("dgram");
 
 class Device {
-  constructor(hostname, pressname, macaddress, ip) {
+  constructor(hostname, pressname, macaddress, ip, connected) {
     this.hostname = hostname;
     this.pressName = pressname;
     this.mac = macaddress;
     this.ip = ip;
+    this.connected = connected;
   }
 }
 
@@ -18,13 +19,16 @@ function sendDevices(records) {
 function createRecord(stringRecord, ipItem) {
   var arrayDeviceResponse = stringRecord.split(",");
   var arrayPressName = arrayDeviceResponse[3].split("|");
+  var arrayconnected = arrayDeviceResponse[4].split("|");
+  var connected = arrayconnected[1];
   var pressName = arrayPressName[1];
   var address = ipItem.address;
   var device = new Device(
     arrayDeviceResponse[0],
     pressName,
     arrayDeviceResponse[1],
-    address
+    address,
+    connected
   );
   return device;
 }
@@ -43,6 +47,7 @@ module.exports.startUPDdeviceTable = function () {
   server.on("message", function (msg, rinfo) {
     var string = msg.toString("utf8").split("\r\n").join();
     var joinedString = string.split(" ").join("");
+    console.log(joinedString);
     var device = createRecord(joinedString, rinfo);
     devices.push(device);
     sendDevices(devices);

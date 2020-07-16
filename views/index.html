@@ -23,12 +23,23 @@
     <link rel="stylesheet/less" href="../assets/css/appStyles.less" />
     <script src="../assets/less.min.js"></script>
     <script src="../assets/Chart_2_8.min.js"></script>
-    <script src="../assets/pdfkit.standalone.js"></script>
-    <script src="../assets/blob-stream.js"></script>
-   
+    <script src="../assets/html2.bundle.min.js"></script>
   </head>
 
   <body>
+    <div style="display: none;" id="invoice">
+      <div>
+        PDF Output
+        <button onclick="download()" id="pdf-btn-test">Download</button>
+      </div>
+      <iframe
+        frameborder="0"
+        id="pdf-frame"
+        width="100%"
+        height="800px"
+      ></iframe>
+    </div>
+
     <div class="introduction active" id="introduction">
       <div class="details-intro">
         <h1 class="title">G3 Plus</h1>
@@ -51,7 +62,7 @@
         <ul class="wifi-networks-list" id="wifi-network-list-container"></ul>
       </div>
       <div class="popUp-connect" id="popUp-connect">
-        <div class="network-details">
+        <div class="network-details" id="network-credentials">
           <div class="ssid">
             <strong> <i class="fas fa-wifi"></i>Network:</strong>
             <span id="ssid-connect"></span>
@@ -69,8 +80,14 @@
               Cancel
             </button>
           </div>
-
           <div class="error-connection" id="error-connection-WIFI"></div>
+        </div>
+        <div
+          class="loader"
+          id="loading-gif-connection-request"
+          style="display: none;"
+        >
+          Loading...
         </div>
       </div>
     </div>
@@ -127,6 +144,9 @@
         </button>
         <button class="print disableBtn" id="print-btn" onclick="printStats()">
           Print
+        </button>
+        <button class="print" id="settings-btn" onclick="visibleSettings()">
+          <i class="fas fa-cogs"></i>
         </button>
       </div>
       <div class="inputs-container">
@@ -279,6 +299,7 @@
         </div>
       </div>
     </section>
+
     <!-- calibration Section -->
     <section class="container">
       <h1 class="section-title">Force Sensor Calibration</h1>
@@ -638,9 +659,11 @@ Gold Calibrated 02/Dec/2019</textarea
     <script type="text/javascript" src="../assets/js/clickhandlers.js"></script>
     <script type="text/javascript" src="../assets/js/print.js"></script>
     <script type="text/javascript" src="../assets/js/script.js"></script>
+
     <script
       type="text/javascript"
       src="../assets/js/networkConnection.js"
     ></script>
+    <script type="text/javascript" src="../assets/js/printPDF.js"></script>
   </body>
 </html>

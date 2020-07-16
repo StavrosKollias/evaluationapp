@@ -1,11 +1,4 @@
-// front.send("hello from front");
-// front.on("hello from back", function (msg) {
-//    console.log(msg);
-//    $("#msg").html(msg);
-// });
-
 var devicesNetwork;
-// function askDevices()
 var connectedDevice;
 front.on("devices", function (devices) {
   devicesNetwork = devices;
@@ -134,12 +127,22 @@ adddevices = (devicesNetwork, device) => {
             var btntext = document.createTextNode("Disconnect");
             button.setAttribute("class", "disconnect-btn");
           } else {
-            var btntext = document.createTextNode("Connect");
-            button.setAttribute("class", "disableBtn");
+            if (e.connected == "Disconnected") {
+              var btntext = document.createTextNode("Connect");
+              button.setAttribute("class", "disableBtn");
+            } else {
+              var btntext = document.createTextNode("OtherSrv");
+              button.setAttribute("class", "disableBtn");
+            }
           }
         } else {
-          var btntext = document.createTextNode("Connect");
-          var button = document.createElement("button");
+          if (e.connected == "Disconnected") {
+            var btntext = document.createTextNode("Connect");
+            var button = document.createElement("button");
+          } else {
+            var btntext = document.createTextNode("OtherSrv");
+            button.setAttribute("class", "disableBtn");
+          }
         }
 
         button.appendChild(btntext);
@@ -149,11 +152,20 @@ adddevices = (devicesNetwork, device) => {
           if (e.hostname == device.hostname) {
             button.setAttribute("class", "disconnect-btn");
           } else {
-            var btntext = document.createTextNode("Connect");
-            button.setAttribute("class", "connection-btn disableBtn");
+            if (e.connected == "Disconnected") {
+              var btntext = document.createTextNode("Connect");
+              button.setAttribute("class", "connection-btn disableBtn");
+            } else {
+              var btntext = document.createTextNode("OtherSrv");
+              button.setAttribute("class", "connection-btn disableBtn");
+            }
           }
         } else {
-          button.setAttribute("class", "connection-btn");
+          if (e.connected == "Disconnected") {
+            button.setAttribute("class", "connection-btn");
+          } else {
+            button.setAttribute("class", "connection-btn disableBtn");
+          }
         }
 
         button.setAttribute("id", e.hostname);
