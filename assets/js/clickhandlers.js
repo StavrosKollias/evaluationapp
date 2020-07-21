@@ -180,6 +180,16 @@ function visibleSettings() {
   }
 }
 
+function visibleVCP() {
+  const inputSettingsContainer = document.querySelector(".vcp-container");
+  const classListInputsContainer = inputSettingsContainer.classList.length;
+  if (classListInputsContainer == 1) {
+    inputSettingsContainer.classList.add("active");
+  } else {
+    inputSettingsContainer.classList.remove("active");
+  }
+}
+
 cancelWifiConnectbtn.addEventListener("click", (e) => {
   var popupConnect = document.getElementById("popUp-connect");
   popupConnect.classList.remove("active");

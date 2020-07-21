@@ -55,51 +55,84 @@ enableNavBtns = (flag) => {
   });
 };
 
-handleClickconnectDevice = (e) => {
-  const button = e.target;
-  const buttonText = button.innerText;
-  const buttonId = button.id;
-  const macaddress = button.parentElement.previousElementSibling.innerText;
+function generateObjDevice(element) {
+  const buttonText = element.innerText;
+  const buttonId = element.id;
+  const macaddress = element.parentElement.previousElementSibling.innerText;
   const ip =
-    button.parentElement.previousElementSibling.previousElementSibling
+    element.parentElement.previousElementSibling.previousElementSibling
       .innerText;
   const hostname =
-    button.parentElement.previousElementSibling.previousElementSibling
+    element.parentElement.previousElementSibling.previousElementSibling
       .previousElementSibling.innerText;
   const deviceCon = { ip: ip, mac: macaddress, hostname: hostname };
+  return deviceCon;
+}
+
+function generateTargetEvent(event) {
+  return event.target;
+}
+
+function arrayMap(arr, operationFunction) {
+  arr.map((e, i) => {
+    operationFunction(e, "disableBtn");
+  });
+}
+
+function idCheckElements(element1, element2) {
+  if (buttonId != e.id) {
+    return true;
+  } else {
+    return false;
+  }
+}
+function removeClassFromElement(element, className) {
+  element.classList.remove(className);
+}
+
+function addClassToElement(element, className) {
+  element.classList.add(className);
+}
+
+function addChildToElement(parent, child) {
+  parent.appendChild(child);
+}
+function removeChildFromElement(element, child) {
+  element.removeChild(child);
+}
+
+function addAttributeToElemet(element, type, string) {
+  element.setAttribute(type, string);
+}
+
+handleClickConnectDevice = (e) => {
+  const button = generateTargetEvent(e);
+  const deviceCon = generateObjDevice(button);
+  const buttonText = button.innerText;
   var connectionbuttons = Array.from(
     document.getElementsByClassName("connection-btn")
   );
   if (buttonText == "Connect") {
     front.send("connected Device", deviceCon);
     button.innerText = "Disconnect";
-    button.classList.remove("connection-btn");
-    button.classList.add("disconnect-btn");
-    connectionbuttons.map((e, i) => {
-      if (buttonId != e.id) {
-        e.classList.add("disableBtn");
-      }
-    });
+    arrayMap(connectionbuttons, addClassToElement);
+    removeClassFromElement(button, "disableBtn");
+    addClassToElement(button, "disconnect-btn");
     enableNavBtns(true);
+    loadVCP(deviceCon.ip);
+    clickHandlersVCP(deviceCon.ip);
   } else {
     front.send("connected Device", null);
     button.innerText = "Connect";
-    button.classList.add("connection-btn");
-    button.classList.remove("disconnect-btn");
-    connectionbuttons.map((e, i) => {
-      if (buttonId != e.id) {
-        e.classList.remove("disableBtn");
-      }
-    });
+    arrayMap(connectionbuttons, removeClassFromElement);
+    removeClassFromElement(button, "disconnect-btn");
     enableNavBtns(false);
   }
 };
 
 adddevices = (devicesNetwork, device) => {
   var devicestable = document.getElementById("divice-connection");
-  if (devicestable.children.length > 0) {
-    devicestable.removeChild(devicestable.children[0]);
-  }
+  removeTableElementChild(devicestable);
 
   var tablebody = document.createElement("tbody");
   addTitleDeviceTable(devicestable, tablebody);
@@ -107,139 +140,104 @@ adddevices = (devicesNetwork, device) => {
     var tr = document.createElement("tr");
     for (var j = 0; j < 4; j++) {
       var td = document.createElement("td");
-
       if (j == 0) {
-        var hostname = document.createTextNode(e.hostname);
-        td.appendChild(hostname);
+        var hostName = document.createTextNode(e.hostname);
+        addChildToElement(td, hostName);
       }
       if (j == 1) {
         var ip = document.createTextNode(e.ip);
-        td.appendChild(ip);
+        addChildToElement(td, ip);
       }
       if (j == 2) {
-        var macaddress = document.createTextNode(e.mac);
-        td.appendChild(macaddress);
+        var macAddress = document.createTextNode(e.mac);
+        addChildToElement(td, macAddress);
       }
       if (j == 3) {
         var button = document.createElement("button");
         if (device != undefined) {
           if (e.hostname == device.hostname) {
-            var btntext = document.createTextNode("Disconnect");
-            button.setAttribute("class", "disconnect-btn");
+            var btnText = document.createTextNode("Disconnect");
+            addAttributeToElemet(button, "class", "disconnect-btn");
           } else {
             if (e.connected == "Disconnected") {
-              var btntext = document.createTextNode("Connect");
-              button.setAttribute("class", "disableBtn");
+              var btnText = document.createTextNode("Connect");
+              addAttributeToElemet(button, "class", "disableBtn");
             } else {
-              var btntext = document.createTextNode("OtherSrv");
-              button.setAttribute("class", "disableBtn");
+              var btnText = document.createTextNode("OtherSrv");
+              addAttributeToElemet(button, "class", "disableBtn");
             }
           }
         } else {
           if (e.connected == "Disconnected") {
-            var btntext = document.createTextNode("Connect");
+            var btnText = document.createTextNode("Connect");
             var button = document.createElement("button");
           } else {
-            var btntext = document.createTextNode("OtherSrv");
-            button.setAttribute("class", "disableBtn");
+            var btnText = document.createTextNode("OtherSrv");
+            addAttributeToElemet(button, "class", "disableBtn");
           }
         }
-
-        button.appendChild(btntext);
-        td.appendChild(button);
+        addChildToElement(button, btnText);
+        addChildToElement(td, button);
 
         if (device != undefined) {
           if (e.hostname == device.hostname) {
-            button.setAttribute("class", "disconnect-btn");
+            addAttributeToElemet(button, "class", "disconnect-btn");
           } else {
             if (e.connected == "Disconnected") {
-              var btntext = document.createTextNode("Connect");
-              button.setAttribute("class", "connection-btn disableBtn");
+              var btnText = document.createTextNode("Connect");
+              addAttributeToElemet(
+                button,
+                "class",
+                "connection-btn disableBtn"
+              );
             } else {
-              var btntext = document.createTextNode("OtherSrv");
-              button.setAttribute("class", "connection-btn disableBtn");
+              var btnText = document.createTextNode("OtherSrv");
+              addAttributeToElemet(
+                button,
+                "class",
+                "connection-btn disableBtn"
+              );
             }
           }
         } else {
           if (e.connected == "Disconnected") {
-            button.setAttribute("class", "connection-btn");
+            addAttributeToElemet(button, "class", "connection-btn");
           } else {
-            button.setAttribute("class", "connection-btn disableBtn");
+            addAttributeToElemet(button, "class", "connection-btn disableBtn");
           }
         }
-
-        button.setAttribute("id", e.hostname);
-        button.addEventListener("click", (e) => handleClickconnectDevice(e));
+        addAttributeToElemet(button, "id", e.hostname);
+        button.addEventListener("click", (e) => handleClickConnectDevice(e));
       }
 
-      tr.appendChild(td);
+      addChildToElement(tr, td);
     }
-    tablebody.appendChild(tr);
+    addChildToElement(tablebody, tr);
   });
 };
+
+function removeTableElementChild(element) {
+  if (element.children.length > 0) {
+    removeChildFromElement(element, element.children[0]);
+  }
+}
 
 addTitleDeviceTable = (table, body) => {
   var trheader = document.createElement("tr");
   var tdName = document.createElement("td");
-  var nametitle = document.createTextNode("Name");
-  tdName.appendChild(nametitle);
+  var nameTitle = document.createTextNode("Name");
+  addChildToElement(tdName, nameTitle);
   var tdIP = document.createElement("td");
-  var iptitle = document.createTextNode("Ip");
-  tdIP.appendChild(iptitle);
-
+  var ipTitle = document.createTextNode("Ip");
+  addChildToElement(tdIP, ipTitle);
   var tdMac = document.createElement("td");
-  var mactitle = document.createTextNode("mac");
-  tdMac.appendChild(mactitle);
+  var macTitle = document.createTextNode("mac");
+  addChildToElement(tdMac, macTitle);
   var tdbutton = document.createElement("td");
-  trheader.appendChild(tdName);
-  trheader.appendChild(tdIP);
-  trheader.appendChild(tdMac);
-  trheader.appendChild(tdbutton);
-  body.appendChild(trheader);
-  table.appendChild(body);
+  addChildToElement(trheader, tdName);
+  addChildToElement(trheader, tdIP);
+  addChildToElement(trheader, tdMac);
+  addChildToElement(trheader, tdbutton);
+  addChildToElement(body, trheader);
+  addChildToElement(table, body);
 };
-
-// adddevices(devices);
-
-// var devices = [
-//   {
-//     ip: "192.168.1.102",
-//     alive: true,
-//     hostname: "Press 1",
-//     mac: "00:1e:c0:ce:94:ca",
-//     vendor: "Technology",
-//     hostnameError: null,
-//     macError: null,
-//     vendorError: null,
-//   },
-//   {
-//     ip: "192.168.1.103",
-//     alive: true,
-//     hostname: "Press 2",
-//     mac: "00:1e:c0:ce:94:ca",
-//     vendor: "Technology",
-//     hostnameError: null,
-//     macError: null,
-//     vendorError: null,
-//   },
-//   {
-//     ip: "192.168.1.104",
-//     alive: true,
-//     hostname: "Press 3",
-//     mac: "00:1e:c0:ce:94:ca",
-//     vendor: "Technology",
-//     hostnameError: null,
-//     macError: null,
-//     vendorError: null,
-//   },
-//   {
-//     ip: "192.168.1.105",
-//     alive: true,
-//     hostname: "Press 4",
-//     mac: "00:1e:c0:ce:94:ca",
-//     vendor: "Technology",
-//     hostnameError: null,
-//     macError: null,
-//     vendorError: null,
-//   },
-// ];
