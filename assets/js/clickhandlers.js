@@ -190,12 +190,17 @@ function visibleVCP() {
   }
 }
 
+function handleClickGetCalBtn() {
+  front.send("give me Connected Device forCal");
+}
+
 cancelWifiConnectbtn.addEventListener("click", (e) => {
   var popupConnect = document.getElementById("popUp-connect");
   popupConnect.classList.remove("active");
   document.getElementById("network-password").value = "";
   document.getElementById("error-connection-WIFI").style.display = "none";
 });
+
 connectWifiNetwork.addEventListener("click", (e) => {
   const ssid = document.getElementById("ssid-connect").innerText;
   const pass = document.getElementById("network-password").value;
