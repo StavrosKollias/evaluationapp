@@ -16,6 +16,10 @@ back.on("connected Device", function (device) {
   connectDevice(device);
 });
 
+back.on("give me Connected Device forCal", function () {
+  back.send("connected Device forCal", connectedDevice);
+});
+
 function connectDevice(device) {
   if (device != null) {
     connectedDevice = device;

@@ -1,5 +1,4 @@
 function sendCalibrationTableToCFA() {
-  const deviceIP = document.getElementById("cfa-ip-input").value;
   $.ajax({
     url: `http://${deviceIP}/protect/sensor.htm`,
     type: "GET",
@@ -27,3 +26,12 @@ function removeChildFromElement(parent, child) {
 function addChildToElement(parent, child) {
   parent.appendChild(child);
 }
+
+const getCalBtn = document.getElementById("get-cal-btn");
+getCalBtn.addEventListener("click", () => {
+  front.send("give me Connected Device forCal");
+});
+
+front.on("connected Device forCal", (device) => {
+  sendCalibrationTableToCFA(device.ip);
+});
