@@ -27,7 +27,7 @@
     "commander": "^5.1.0",
     "datagram-stream": "^1.1.1",
     "dgram": "^1.0.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "ip": "^1.1.5",
     "jsdom": "^16.2.2",
     "lodash": "^4.17.19",
